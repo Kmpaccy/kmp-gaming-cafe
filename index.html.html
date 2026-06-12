@@ -1,0 +1,802 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KMP Gaming Café — PlayStation, pool table, fast food, popcorn and drinks in Kigali Nyamirambo, Rwanda. Open every day from 7AM." />
+  <title>KMP Gaming Café | Kigali, Rwanda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+
+    /* ============================================================
+       🎨 COLOR PALETTE — change colors here to restyle everything
+       ============================================================ */
+    :root {
+      --black:        #000000;   /* main background                  */
+      --white:        #ffffff;   /* text on dark, button text        */
+      --green:        #16a34a;   /* primary green (buttons, badges)  */
+      --green-light:  #16a34a;   /* bright green (accents, hover)    */
+      --green-dim:    #16a34a;   /* dark green (pill border)         */
+      --green-bg:     #004700;   /* green pill background            */
+      --grey:         #111111;   /* card / surface background        */
+      --grey2:        #8AFF8A;   /* hover surface                    */
+      --grey3:        #004700;   /* muted badge background           */
+      --line:         #;   /* all divider lines                */
+      --text:         #f4f4f4;   /* main body text                   */
+      --muted:        #00ff00;   /* secondary / description text     */
+      --muted2:       #00D100;   /* very muted labels                */
+    }
+
+    /* ============================================================
+       🔧 RESET & BASE STYLES
+       ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a      { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; }
+    .tag   { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+    /* ============================================================
+       🔝 NAVIGATION
+       Edit: logo text · nav links · WhatsApp href
+       ============================================================ */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(0,0,0,0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2rem; max-width: 1120px; margin: 0 auto;
+    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 1px; color: var(--white); }
+    .nav-logo span { color: var(--green-light); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+
+    /* "Open Now" animated pill */
+    .status-pill {
+      display: flex; align-items: center; gap: 7px;
+      border: 1px solid var(--green-dim); padding: 6px 14px; background: var(--green-bg);
+    }
+    .status-dot { width: 6px; height: 6px; background: var(--green-light); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+    .status-text { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-light); font-weight: 500; }
+
+    /* Nav CTA button */
+    .nav-cta {
+      background: var(--white); color: var(--black);
+      font-size: 11px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; border: none; padding: 9px 20px; transition: background .2s, color .2s;
+    }
+    .nav-cta:hover { background: var(--green-light); color: var(--white); }
+
+    /* ============================================================
+       🦸 HERO SECTION
+       Edit: eyebrow tag · title lines · description · stat numbers
+       ============================================================ */
+    .hero { min-height: 92vh; display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
+
+    .hero-left {
+      border-right: 1px solid var(--line); padding: 5rem 3rem 4rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hero-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(52px, 7vw, 88px); line-height: .95; letter-spacing: -2px;
+      color: var(--white); flex: 1; display: flex; flex-direction: column; justify-content: center;
+    }
+    .hero-title .line-green   { color: var(--green-light); }
+    .hero-title .line-outline { -webkit-text-stroke: 1px var(--white); color: transparent; }
+
+    .hero-right { padding: 5rem 3rem 4rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .hero-desc  { font-size: 16px; line-height: 1.85; color: var(--muted); max-width: 420px; margin-top: auto; }
+    .hero-desc strong { color: var(--white); font-weight: 500; }
+
+    /* Hero buttons */
+    .hero-btns { display: flex; gap: 12px; margin-top: 3rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--green); color: var(--white);
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; border: none; padding: 14px 28px; transition: background .2s;
+    }
+    .btn-primary:hover { background: var(--green-light); }
+    .btn-secondary {
+      background: transparent; color: var(--white);
+      font-size: 12px; font-weight: 400; letter-spacing: 2px;
+      text-transform: uppercase; border: 1px solid var(--grey3); padding: 14px 28px; transition: border-color .2s;
+    }
+    .btn-secondary:hover { border-color: var(--white); }
+
+    /* Hero stats row */
+    .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 4rem; border-top: 1px solid var(--line); }
+    .stat { padding: 1.5rem 1rem; border-right: 1px solid var(--line); }
+    .stat:last-child { border-right: none; }
+    .stat-num   { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 36px; color: var(--white); line-height: 1; }
+    .stat-num span { color: var(--green-light); }
+    .stat-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+    /* ============================================================
+       📢 PROMO BANNER — eye-catching announcement strip
+       Edit: text inside .promo-text · background color via --green
+       ============================================================ */
+    .promo-banner {
+      background: var(--green); padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+      border-bottom: 1px solid var(--green-dim);
+      flex-wrap: wrap;
+    }
+    .promo-text {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--white);
+    }
+    .promo-pill {
+      background: rgb(0,128,0,); color: var(--white);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 5px 14px; border: 1px solid rgb(0,128,0);
+    }
+    .promo-dot { color: rgba(255,255,255,.4); font-size: 18px; }
+
+    /* ============================================================
+       📺 MARQUEE TICKER — scrolling green bar
+       Edit: <span> text inside .marquee-track (keep both halves equal)
+       ============================================================ */
+    .marquee-wrap { border-bottom: 1px solid var(--line); background: var(--black); padding: .6rem 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--line); }
+    .marquee-track { display: inline-block; animation: marquee 22s linear infinite; }
+    .marquee-track span     { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-right: 3rem; }
+    .marquee-track span.dot { color: var(--green-light); margin-right: 3rem; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ============================================================
+       📐 SECTION LAYOUT — shared grid for all sections
+       ============================================================ */
+    .section { display: grid; grid-template-columns: 220px 1fr; border-bottom: 1px solid var(--line); }
+    .section-aside {
+      border-right: 1px solid var(--line); padding: 3.5rem 2rem;
+      display: flex; flex-direction: column; gap: .5rem;
+    }
+    .section-num  { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; color: var(--muted2); }
+    .section-name { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+    .section-body { padding: 3.5rem 3rem; }
+    .section-heading {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(36px, 4vw, 52px); line-height: 1;
+      color: var(--white); margin-bottom: 2.5rem; letter-spacing: -1px;
+    }
+    .section-heading em { color: var(--green-light); font-style: normal; }
+
+    /* ============================================================
+       🎮 SERVICES GRID
+       Edit: emoji icon · svc-name · svc-desc · svc-tag per card
+       ============================================================ */
+    .svc-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+    .svc { padding: 2rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background .2s; }
+    .svc:nth-child(2n)        { border-right: none; }
+    .svc:nth-last-child(-n+2) { border-bottom: none; }
+    .svc:hover { background: var(--grey); }
+    .svc-icon { font-size: 28px; margin-bottom: 1.25rem; display: block; }
+    .svc-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 20px; color: var(--white); margin-bottom: .75rem; }
+    .svc-desc { font-size: 13px; line-height: 1.8; color: var(--muted); }
+    .svc-tag  { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted2); margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+
+    /* ============================================================
+       🍽️ MENU GRID
+       Edit: column titles · item names · RWF prices
+       ============================================================ */
+    .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); }
+    .menu-col  { border-right: 1px solid var(--line); }
+    .menu-col:last-child { border-right: none; }
+    .menu-col-head  { padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; background: var(--grey); }
+    .menu-col-icon  { font-size: 16px; }
+    .menu-col-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--white); }
+    .menu-item { display: flex; justify-content: space-between; align-items: center; padding: .8rem 1.25rem; border-bottom: 1px solid var(--line); transition: background .15s; gap: .5rem; }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item:hover { background: var(--grey); }
+    .menu-item-name  { font-size: 12px; color: var(--muted); text-transform: capitalize; }
+    .menu-item-price { font-size: 11px; color: var(--white); font-weight: 500; white-space: nowrap; }
+
+    /* ============================================================
+       💰 PRICING CARDS
+       Edit: price numbers · list items · badge text
+       ============================================================ */
+    .price-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+    .price-col  { padding: 2.5rem; border-right: 1px solid var(--line); }
+    .price-col:last-child { border-right: none; }
+    .price-col.featured { background: var(--grey); }
+    .price-badge  { display: inline-block; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; background: var(--green); color: var(--white); padding: 4px 10px; font-weight: 600; margin-bottom: 1.5rem; }
+    .price-name   { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; color: var(--white); margin-bottom: .3rem; }
+    .price-sub    { font-size: 12px; color: var(--muted); margin-bottom: 2rem; }
+    .price-amount { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 64px; color: var(--white); line-height: 1; }
+    .price-amount span { color: var(--green-light); font-size: 22px; vertical-align: middle; margin-left: 4px; }
+    .price-unit   { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
+    .price-list   { list-style: none; border-top: 1px solid var(--line); }
+    .price-list li { font-size: 13px; color: var(--muted); padding: .75rem 0; border-bottom: 1px solid var(--line); display: flex; gap: 10px; align-items: center; }
+    .price-list li:last-child { border-bottom: none; }
+    .price-list li::before { content: '✓'; color: var(--green-light); font-size: 12px; flex-shrink: 0; }
+
+    /* ============================================================
+       📍 LOCATION SECTION
+       Edit: address · hours · phone · catering note · Maps link
+       ============================================================ */
+    .loc-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+    .loc-left { border-right: 1px solid var(--line); }
+    .loc-item { padding: 1.5rem; border-bottom: 1px solid var(--line); display: flex; gap: 1rem; align-items: flex-start; }
+    .loc-item:last-child { border-bottom: none; }
+    .loc-icon  { font-size: 20px; margin-top: 2px; flex-shrink: 0; }
+    .loc-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted2); margin-bottom: 5px; }
+    .loc-value { font-size: 14px; color: var(--text); line-height: 1.7; }
+    .loc-value.green { color: var(--green-light); font-weight: 500; }
+    .loc-map {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; width: 100%; min-height: 100%; border: none;
+      background: var(--grey); cursor: pointer; transition: background .2s;
+    }
+    .loc-map:hover { background: var(--grey2); }
+    .loc-map-icon { font-size: 42px; }
+    .loc-map-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+
+    /* ============================================================
+       🌟 FEATURE STRIP — three highlights between sections
+       Edit: icon · title · text per .feat card
+       ============================================================ */
+    .feat-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+    .feat { padding: 2.5rem 2rem; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: .75rem; }
+    .feat:last-child { border-right: none; }
+    .feat-icon  { font-size: 28px; }
+    .feat-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; color: var(--white); }
+    .feat-text  { font-size: 12px; line-height: 1.8; color: var(--muted); }
+    .feat-tag   { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-light); margin-top: .25rem; }
+
+    /* ============================================================
+       📣 CTA BAND — bottom call-to-action
+       Edit: heading · subtext · button labels · WhatsApp href
+       ============================================================ */
+    .cta-section { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); background: var(--grey); }
+    .cta-left  { border-right: 1px solid var(--line); padding: 5rem 3rem; }
+    .cta-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: .95; letter-spacing: -2px; color: var(--white); }
+    .cta-title span { color: var(--green-light); }
+    .cta-body  { font-size: 14px; line-height: 1.9; color: var(--muted); margin-top: 1.5rem; max-width: 360px; }
+    .cta-right { padding: 5rem 3rem; display: flex; flex-direction: column; justify-content: center; gap: 1rem; }
+    .whatsapp-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--green); color: var(--white);
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; border: none; padding: 16px 28px; transition: background .2s;
+      width: fit-content;
+    }
+    .whatsapp-btn:hover { background: var(--green-light); }
+
+    /* ============================================================
+       🦶 FOOTER
+       Edit: social links · copyright text
+       ============================================================ */
+    .footer       { max-width: 1120px; margin: 0 auto; padding: 2rem; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo  { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; color: var(--white); }
+    .footer-logo span { color: var(--green-light); }
+    .footer-copy  { font-size: 11px; color: var(--muted2); }
+    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer-links a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); transition: color .2s; }
+    .footer-links a:hover { color: var(--white); }
+
+    /* ============================================================
+       📱 RESPONSIVE — mobile layout (max 768px)
+       ============================================================ */
+    @media (max-width: 768px) {
+      .nav-links    { display: none; }
+      .hero         { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left    { border-right: none; border-bottom: 1px solid var(--line); padding: 3rem 1.5rem; }
+      .hero-right   { padding: 3rem 1.5rem; }
+      .hero-stats   { grid-template-columns: 1fr 1fr; }
+      .section      { grid-template-columns: 1fr; }
+      .section-aside{ border-right: none; border-bottom: 1px solid var(--line); padding: 1.5rem; flex-direction: row; align-items: center; gap: 1rem; }
+      .section-body { padding: 2rem 1.5rem; }
+      .svc-grid     { grid-template-columns: 1fr; }
+      .svc          { border-right: none !important; border-bottom: 1px solid var(--line) !important; }
+      .menu-grid    { grid-template-columns: 1fr 1fr; }
+      .menu-col     { border-right: none; border-bottom: 1px solid var(--line); }
+      .menu-col:nth-child(odd)  { border-right: 1px solid var(--line); }
+      .menu-col:last-child      { border-bottom: none; }
+      .price-grid   { grid-template-columns: 1fr; }
+      .price-col    { border-right: none; border-bottom: 1px solid var(--line); }
+      .price-col:last-child { border-bottom: none; }
+      .loc-grid     { grid-template-columns: 1fr; }
+      .loc-left     { border-right: none; border-bottom: 1px solid var(--line); }
+      .loc-map      { min-height: 160px; }
+      .feat-strip   { grid-template-columns: 1fr; }
+      .feat         { border-right: none; border-bottom: 1px solid var(--line); }
+      .feat:last-child { border-bottom: none; }
+      .cta-section  { grid-template-columns: 1fr; }
+      .cta-left     { border-right: none; border-bottom: 1px solid var(--line); padding: 3rem 1.5rem; }
+      .cta-right    { padding: 3rem 1.5rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+      .promo-banner { flex-direction: column; gap: .75rem; text-align: center; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       🔝 NAVIGATION
+       Edit: logo · nav links · WhatsApp number in href
+       ============================================================ -->
+  <header>
+    <nav class="nav">
+      <div class="nav-inner">
+
+        <!-- LOGO -->
+        <div class="nav-logo">KMP <span>Gaming Café</span></div>
+
+        <!-- NAV LINKS -->
+        <ul class="nav-links">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#location">Location</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <!-- LIVE STATUS PILL -->
+          <div class="status-pill">
+            <div class="status-dot"></div>
+            <span class="status-text">Open Now</span>
+          </div>
+          <!-- CTA BUTTON — update href with WhatsApp number -->
+          <a href="https://wa.me/250793606494" target="_blank">
+            <button class="nav-cta">Book Outside Catering</button>
+          </a>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+
+
+  <!-- ============================================================
+       📢 PROMO BANNER — attention-grabbing top strip
+       Edit: .promo-text content and .promo-pill labels
+       ============================================================ -->
+  <div class="promo-banner">
+    <span class="promo-text">🎉 Outside Catering Available for Events & Parties</span>
+    <span class="promo-dot">·</span>
+    <span class="promo-pill"><a href="tel:+250793606494">Call Us </a></span>
+    <span class="promo-dot">·</span>
+    <span class="promo-pill">Open 7AM – 12AM Daily</span>
+  </div>
+
+
+  <!-- ============================================================
+       🦸 HERO SECTION
+       Edit: eyebrow · title lines · description paragraph · stats
+       ============================================================ -->
+  <section class="hero" id="home">
+
+    <div class="hero-left">
+      <!-- Top location tag -->
+      <p class="tag">Kigali, Rwanda &nbsp;·&nbsp; Nyamirambo</p>
+
+      <!-- MAIN TITLE — .line-green = green · .line-outline = hollow white -->
+      <h1 class="hero-title">
+        <span>KMP</span>
+        <span class="line-green">Gaming</span>
+        <span class="line-outline">Café</span>
+      </h1>
+
+      <!-- Bottom hours tag -->
+      <p class="tag">Open every day &nbsp;·&nbsp; 7:00 AM – 12:00 AM</p>
+    </div>
+
+    <div class="hero-right">
+
+      <!-- DESCRIPTION — edit this paragraph -->
+      <p class="hero-desc">
+        <strong>Your favourite spot in Kigali.</strong> Play, eat and chill all under one roof.
+        PlayStation sessions, pool table, hot fast food, popcorn and all kinds of soft drinks.
+        Walk-ins always welcome.
+        <br><br>
+        <strong>We also handle outside catering for events and private parties.</strong>
+        Hit the button below to book today!
+      </p>
+
+      <!-- BUTTONS — update href links -->
+      <div class="hero-btns">
+        <a href="https://wa.me/250793606494" target="_blank">
+          <button class="btn-primary">📦 Book Outside Catering</button>
+        </a>
+        <a href="#menu">
+          <button class="btn-secondary">Check Our Menu</button>
+        </a>
+      </div>
+
+      <!-- STATS — update numbers if needed -->
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">2</div>
+          <div class="stat-label">PS4 Consoles</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Pool Table</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span>7</span>AM</div>
+          <div class="stat-label">Opens Daily</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span>10</span>+</div>
+          <div class="stat-label">Snack Seats</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       📺 MARQUEE TICKER — scrolling info bar
+       Edit: <span> text (keep both halves identical for seamless loop)
+       ============================================================ -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span>PlayStation 4</span><span class="dot">✦</span>
+      <span>Pool Table</span><span class="dot">✦</span>
+      <span>Fast Food</span><span class="dot">✦</span>
+      <span>Popcorn</span><span class="dot">✦</span>
+      <span>Soft Drinks</span><span class="dot">✦</span>
+      <span>Outside Catering</span><span class="dot">✦</span>
+      <span>Dine In &amp; Take Away</span><span class="dot">✦</span>
+      <span>Open 7AM Daily</span><span class="dot">✦</span>
+      <!-- duplicate for seamless loop -->
+      <span>PlayStation 4</span><span class="dot">✦</span>
+      <span>Pool Table</span><span class="dot">✦</span>
+      <span>Fast Food</span><span class="dot">✦</span>
+      <span>Popcorn</span><span class="dot">✦</span>
+      <span>Soft Drinks</span><span class="dot">✦</span>
+      <span>Outside Catering</span><span class="dot">✦</span>
+      <span>Dine In &amp; Take Away</span><span class="dot">✦</span>
+      <span>Open 7AM Daily</span><span class="dot">✦</span>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       🌟 FEATURE STRIP — 3 key selling points
+       Edit: feat-icon · feat-title · feat-text · feat-tag
+       ============================================================ -->
+  <div class="feat-strip">
+    <div class="feat">
+      <span class="feat-icon">🎮</span>
+      <div class="feat-title">Game All Day</div>
+      <p class="feat-text">Two PlayStation 4 consoles with the latest titles. Book by the hour or stay as long as you like.</p>
+      <span class="feat-tag">2,500 RWF / hour</span>
+    </div>
+    <div class="feat">
+      <span class="feat-icon">🍟</span>
+      <div class="feat-title">Fresh Food Always</div>
+      <p class="feat-text">Hot fries, samosas, chapati and more — made fresh and served fast so you never have to pause the game.</p>
+      <span class="feat-tag">Eat in · Take away</span>
+    </div>
+    <div class="feat">
+      <span class="feat-icon">🚐</span>
+      <div class="feat-title">Outside Catering</div>
+      <p class="feat-text">Planning an event or private party? We bring the food and drinks to you. Call us to arrange your package.</p>
+      <span class="feat-tag">Call +250 793 606 494</span>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       🎮 SERVICES SECTION
+       Edit: icon · svc-name · svc-desc · svc-tag per card
+       ============================================================ -->
+  <section class="section" id="services">
+    <div class="section-aside">
+      <div class="section-num">01</div>
+      <div class="section-name">Services</div>
+    </div>
+    <div class="section-body">
+      <h2 class="section-heading">What We <em>Offer</em></h2>
+      <div class="svc-grid">
+
+        <!-- CARD 1 -->
+        <div class="svc">
+          <span class="svc-icon">🎮</span>
+          <div class="svc-name">PlayStation 4</div>
+          <p class="svc-desc">Two PS4 consoles packed with FIFA, GTA, Call of Duty, Mortal Kombat and more. Solo sessions or head-to-head battles — always a great time.</p>
+          <div class="svc-tag">Hourly · Group packages available</div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="svc">
+          <span class="svc-icon">🎱</span>
+          <div class="svc-name">Pool Table</div>
+          <p class="svc-desc">Full-size professional pool table. Casual rounds, competitive matches or organised tournaments — all welcome at KMP.</p>
+          <div class="svc-tag">Per game · Daily rates available</div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="svc">
+          <span class="svc-icon">🍟</span>
+          <div class="svc-name">Fast Food</div>
+          <p class="svc-desc">Freshly made samosas, fries, chapati and sausages served hot at your table. Gaming is always better on a full stomach.</p>
+          <div class="svc-tag">Eat in · Take away · Outside catering</div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="svc">
+          <span class="svc-icon">🥤</span>
+          <div class="svc-name">Drinks &amp; Popcorn</div>
+          <p class="svc-desc">Cold sodas, juices, hot drinks and fresh popcorn in multiple flavours. We also handle outside catering for events and private parties.</p>
+          <div class="svc-tag">In-café · Events &amp; outside catering</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       🍽️ MENU SECTION
+       Edit: column titles · item names · RWF prices
+       ============================================================ -->
+  <section class="section" id="menu">
+    <div class="section-aside">
+      <div class="section-num">02</div>
+      <div class="section-name">Menu</div>
+    </div>
+    <div class="section-body">
+      <h2 class="section-heading">Food &amp; <em>Drinks</em></h2>
+      <div class="menu-grid">
+
+        <!-- COLUMN 1: FAST FOOD -->
+        <div class="menu-col">
+          <div class="menu-col-head">
+            <span class="menu-col-icon">🍟</span>
+            <span class="menu-col-title">Fast Food</span>
+          </div>
+          <div class="menu-item"><span class="menu-item-name">Fresh made fries</span>        <span class="menu-item-price">1,500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">3-egg omelette &amp; fries</span><span class="menu-item-price">1,700 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Meat samosa</span>             <span class="menu-item-price">450 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Irish potato samosa</span>     <span class="menu-item-price">250 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Egg samosa</span>              <span class="menu-item-price">500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Chapati</span>                 <span class="menu-item-price">300 RWF</span></div>
+        </div>
+
+        <!-- COLUMN 2: POPCORN -->
+        <div class="menu-col">
+          <div class="menu-col-head">
+            <span class="menu-col-icon">🍿</span>
+            <span class="menu-col-title">Popcorn</span>
+          </div>
+          <div class="menu-item"><span class="menu-item-name">Classic salted (small)</span> <span class="menu-item-price">500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Classic salted (big)</span>   <span class="menu-item-price">1,000 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Sweet caramel (small)</span>  <span class="menu-item-price">1,700 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Sweet caramel (big)</span>    <span class="menu-item-price">2,500 RWF</span></div>
+        </div>
+
+        <!-- COLUMN 3: COLD DRINKS -->
+        <div class="menu-col">
+          <div class="menu-col-head">
+            <span class="menu-col-icon">🥤</span>
+            <span class="menu-col-title">Cold Drinks</span>
+          </div>
+          <div class="menu-item"><span class="menu-item-name">Fanta (take away)</span>      <span class="menu-item-price">1,200 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Inyange juice</span>           <span class="menu-item-price">1,200 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Fresh made juice</span>        <span class="menu-item-price">1,500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Nile water (small)</span>      <span class="menu-item-price">500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Nile water (big)</span>        <span class="menu-item-price">1,000 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Energy drink</span>            <span class="menu-item-price">600 RWF</span></div>
+        </div>
+
+        <!-- COLUMN 4: HOT DRINKS -->
+        <div class="menu-col">
+          <div class="menu-col-head">
+            <span class="menu-col-icon">☕</span>
+            <span class="menu-col-title">Hot Drinks</span>
+          </div>
+          <div class="menu-item"><span class="menu-item-name">African tea</span>            <span class="menu-item-price">500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Black tea</span>              <span class="menu-item-price">500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Ginger tea</span>             <span class="menu-item-price">500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Cloves tea</span>             <span class="menu-item-price">500 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Dates drink</span>            <span class="menu-item-price">1,000 RWF</span></div>
+          <div class="menu-item"><span class="menu-item-name">Hot milk</span>               <span class="menu-item-price">500 RWF</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       💰 PRICING SECTION
+       Edit: price amounts · list items · badge text
+       ============================================================ -->
+  <section class="section" id="pricing">
+    <div class="section-aside">
+      <div class="section-num">03</div>
+      <div class="section-name">Pricing</div>
+    </div>
+    <div class="section-body">
+      <h2 class="section-heading">Play Your <em>Way</em></h2>
+      <div class="price-grid">
+
+        <!-- PRICING CARD 1 -->
+        <div class="price-col featured">
+          <div class="price-badge">Most Popular</div>
+          <div class="price-name">PlayStation 4</div>
+          <div class="price-sub">Per console · per hour</div>
+          <div class="price-amount">2500 <span>RWF</span></div>
+          <div class="price-unit">Per Hour</div>
+          <ul class="price-list">
+            <li>2 consoles always available</li>
+            <li>All games included</li>
+            <li>Solo or group play</li>
+            <li>Walk-in or book ahead</li>
+          </ul>
+        </div>
+
+        <!-- PRICING CARD 2 -->
+        <div class="price-col">
+          <div class="price-badge" style="background:var(--grey3); color:var(--muted);">Per Game</div>
+          <div class="price-name">Pool Table</div>
+          <div class="price-sub">Full-size · cues included</div>
+          <div class="price-amount">500 <span>RWF</span></div>
+          <div class="price-unit">Per Game</div>
+          <ul class="price-list">
+            <li>Full-size professional table</li>
+            <li>Cues &amp; chalk included</li>
+            <li>Singles or doubles</li>
+            <li>Tournaments welcome</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       📍 LOCATION SECTION
+       Edit: address lines · hours · phone · Maps href
+       ============================================================ -->
+  <section class="section" id="location">
+    <div class="section-aside">
+      <div class="section-num">04</div>
+      <div class="section-name">Location</div>
+    </div>
+    <div class="section-body">
+      <h2 class="section-heading">Find <em>Us</em></h2>
+      <div class="loc-grid">
+
+        <div class="loc-left">
+
+          <!-- ADDRESS -->
+          <div class="loc-item">
+            <span class="loc-icon">📍</span>
+            <div>
+              <div class="loc-label">Address</div>
+              <div class="loc-value">
+                Kigali, Rwanda — Nyamirambo<br>
+                Biryogo Car Free Zone<br>
+                Mumarangi
+              </div>
+            </div>
+          </div>
+
+          <!-- HOURS -->
+          <div class="loc-item">
+            <span class="loc-icon">🕐</span>
+            <div>
+              <div class="loc-label">Opening Hours</div>
+              <div class="loc-value">Every day · 7:00 AM – 12:00 AM</div>
+            </div>
+          </div>
+
+          <!-- PHONE -->
+          <div class="loc-item">
+            <span class="loc-icon">💬</span>
+            <div>
+              <div class="loc-label"><a href="https://wa.me/250793606494" target="_blank">whatsapp</a> </div>
+              <div class="loc-value green"><a href="tel:+250793606494">Press to call</a></div>
+            </div>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="loc-item">
+            <span class="loc-icon">✉️</span>
+            <div>
+              <div class="loc-label">Email</div>
+              <div class="loc-value green">kmpgamingcafe@gmail.com</div>
+            </div>
+          </div>
+
+          <!-- CATERING -->
+          <div class="loc-item">
+            <span class="loc-icon">🚐</span>
+            <div>
+              <div class="loc-label">Outside Catering</div>
+              <div class="loc-value">Events &amp; parties · Call to arrange</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MAP — update href with your Google Maps link -->
+        <div>
+          <a href="https://maps.app.goo.gl/ZjupMKRxB5e2G2QC9" target="_blank" style="display:block; height:100%;">
+            <button class="loc-map" style="min-height:300px;">
+              <span class="loc-map-icon">🗺️</span>
+              <span class="loc-map-label">Open in Google Maps</span>
+            </button>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       📣 CTA BAND
+       Edit: heading · body text · button labels · href links
+       ============================================================ -->
+  <section class="cta-section">
+    <div class="cta-left">
+      <h2 class="cta-title">Come<br><span>Play</span><br>With Us.</h2>
+      <p class="cta-body">Walk in anytime or WhatsApp us to reserve your console or pool table. Open every single day from 7 AM to 12:00 AM — no appointment needed.</p>
+    </div>
+    <div class="cta-right">
+      <!-- WHATSAPP BUTTON -->
+      <a href="https://wa.me/250793606494" target="_blank">
+        <button class="whatsapp-btn">💬 &nbsp; WhatsApp Us Now</button>
+      </a>
+      <!-- MENU BUTTON -->
+      <a href="#menu">
+        <button class="btn-secondary">Check Our Menu</button>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       🦶 FOOTER
+       Edit: social media hrefs · copyright text
+       ============================================================ -->
+  <footer style="background:var(--black); border-top:1px solid var(--line);">
+    <div class="footer">
+      <div class="footer-inner">
+        <div class="footer-logo">KMP <span>Gaming Café</span></div>
+        <div class="footer-copy">kmpgamingcafé © 2026 · Kigali–Nyamirambo, Rwanda</div>
+        <nav class="footer-links">
+          <a href="https://www.instagram.com/kmpcorex?igsh=MWI5NndybTVlYndzeg==" target="_blank">Instagram</a>
+          <a href="https://www.facebook.com/kmpcorex" target="_blank">Facebook</a>
+          <a href="https://vm.tiktok.com/ZS9YXMpcBB9BE-Yjxuy/" target="_blank">TikTok</a>
+          <a href="https://youtube.com/@kmpcorex?si=KXdyEXX86BppLhNM" target="_blank">YouTube</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
